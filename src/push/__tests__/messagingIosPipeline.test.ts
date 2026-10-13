@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { Platform } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
+import { getFcmTokenWithRetry, requestNotificationPermission } from '../messaging';
 
 jest.mock('@notifee/react-native', () => ({
   __esModule: true,
@@ -22,8 +23,6 @@ jest.mock('../fcmTokenSync', () => ({
 jest.mock('../../native/permissions', () => ({
   ensureAndroidPostNotifications: jest.fn(async () => true),
 }));
-
-import { getFcmTokenWithRetry, requestNotificationPermission } from '../messaging';
 
 describe('iOS Messaging Pipeline Verification', () => {
   const originalOs = Platform.OS;
