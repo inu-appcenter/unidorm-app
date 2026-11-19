@@ -84,6 +84,14 @@ describe('resolveBackAction', () => {
           currentPath: '/complain',
         }),
       ).toBe('goToHome');
+      expect(
+        resolveBackAction({
+          handled: false,
+          isRoot: true,
+          webViewCanGoBack: false,
+          currentPath: '/onboarding',
+        }),
+      ).toBe('exitPrompt');
     });
 
     it('steps back in WebView history if on non-main-tab in root', () => {
