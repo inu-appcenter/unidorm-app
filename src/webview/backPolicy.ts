@@ -57,10 +57,11 @@ export function resolveBackAction({
   // Root WebView:
   const norm = normalizePath(currentPath);
   const isMainTab = isMainTabPath(norm);
-  const isHome = norm === '/' || norm === '/home';
+  const isExitRoute =
+    norm === '/' || norm === '/home' || norm === '/onboarding';
 
   if (isMainTab) {
-    if (isHome) {
+    if (isExitRoute) {
       return 'exitPrompt';
     }
     return 'goToHome';
