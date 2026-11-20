@@ -24,9 +24,12 @@ module.exports = () => ({
     },
     android: {
       ...expo.android,
+      googleServicesFile:
+        process.env.GOOGLE_SERVICES_JSON ?? expo.android.googleServicesFile,
       ...(isDevVariant && {
         package: "com.hjunieee.inudormitory.dev",
-        googleServicesFile: "./google-services-dev.json",
+        googleServicesFile:
+          process.env.GOOGLE_SERVICES_JSON ?? "./google-services-dev.json",
         adaptiveIcon: {
           foregroundImage: "./assets/images/android-icon-foreground-dev.png",
           backgroundImage: "./assets/images/android-icon-background.png",
