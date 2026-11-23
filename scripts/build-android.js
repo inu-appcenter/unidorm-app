@@ -73,6 +73,23 @@ try {
     throw new Error(`Expo Prebuild 실패 (종료 코드: ${prebuildResult.status})`);
   }
 
+  // Windows 환경에서 Expo 56 기본 Gradle 9.3.1이 react-native-worklets Groovy 클로저
+  // 데코레이션 중 NoClassDefFoundError를 유발하므로 검증된 8.13으로 고정합니다.
+  if (process.platform === 'win32') {
+    const wrapperPropsPath = path.resolve(androidDir, 'gradle/wrapper/gradle-wrapper.properties');
+    if (fs.existsSync(wrapperPropsPath)) {
+      const wrapperProps = fs.readFileSync(wrapperPropsPath, 'utf8');
+      const patchedProps = wrapperProps.replace(
+        /gradle-9\.3\.1-bin\.zip/g,
+        'gradle-8.13-bin.zip'
+      );
+      if (patchedProps !== wrapperProps) {
+        fs.writeFileSync(wrapperPropsPath, patchedProps, 'utf8');
+        console.log('🔧 [3.5/5] Windows 호환을 위해 Gradle Wrapper를 8.13으로 고정했습니다.');
+      }
+    }
+  }
+
   // 4. Gradle 빌드 실행
   console.log('⚙️  [4/5] Gradle 빌드 실행...');
   const gradlew = process.platform === 'win32' ? '.\\gradlew.bat' : './gradlew';
